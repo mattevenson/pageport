@@ -11,7 +11,9 @@ const mapPagesToPins = (pages: Page[]) =>
       longitude={page.location!.longitude!}
       latitude={page.location!.latitude!}
       name={page.name}
+      src={page.cover.source!}
       key={page.id}
+      description={page.description!}
     />
   ));
 
