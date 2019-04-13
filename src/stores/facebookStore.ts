@@ -1,11 +1,37 @@
 import { observable, action } from "mobx";
+import * as firebase from "firebase/app";
+import "firebase/auth";
+
+export interface Page {
+  name: string;
+  location?: {
+    city?: string;
+    latitude?: number;
+    longitude?: number;
+    state?: string;
+    zip?: string;
+    country?: string;
+  };
+  cover: {
+    source?: string;
+  };
+  description?: string;
+}
 
 export class FacebookStore {
-  @observable pages?: any[];
+  @observable pages: Page[] = [];
 
-  @action setPages(pages: any[]) {
+  @action setPages(pages: Page[]) {
     this.pages = pages;
-    console.log(pages);
+    console.log(this.pages.length);
+  }
+
+  constructor() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.fetchPages();
+      }
+    });
   }
 
   fetchPages() {
@@ -13,8 +39,8 @@ export class FacebookStore {
       FB.api(
         "/me/likes?fields=name,location,cover,description",
         (response: any) => {
-          const pages: any[] = [];
-          response.data.forEach((page: any) => {
+          const pages: Page[] = [];
+          response.data.forEach((page: Page) => {
             if (page.location && page.location.latitude) {
               pages.push(page);
             }
