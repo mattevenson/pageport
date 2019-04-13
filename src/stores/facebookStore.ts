@@ -16,6 +16,7 @@ export interface Page {
     source?: string;
   };
   description?: string;
+  id: number;
 }
 
 export class FacebookStore {

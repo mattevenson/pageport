@@ -1,8 +1,19 @@
 import React from "react";
 import ReactMapGL from "react-map-gl";
 import { observer, inject } from "mobx-react";
-import { FacebookStore } from "../stores/facebookStore";
+import { FacebookStore, Page } from "../stores/facebookStore";
 import { MapStore } from "../stores/mapStore";
+import Pin from "./Pin";
+
+const mapPagesToPins = (pages: Page[]) =>
+  pages.map(page => (
+    <Pin
+      longitude={page.location!.longitude!}
+      latitude={page.location!.latitude!}
+      name={page.name}
+      key={page.id}
+    />
+  ));
 
 interface IProps {
   facebookStore?: FacebookStore;
@@ -18,7 +29,7 @@ const Map: React.SFC<IProps> = ({ children, facebookStore, mapStore }) => (
       mapboxApiAccessToken="pk.eyJ1IjoibWF0dGV2ZW5zb24iLCJhIjoiY2p1ZjRza3B6MGFoNjRmcGptZzJicmswaiJ9.XdKarNxE21bMkSSt6HuFAA"
       onViewportChange={viewState => mapStore!.setViewState(viewState)}
     >
-      <p>{JSON.stringify(facebookStore!.pages)}</p>
+      {mapPagesToPins(facebookStore!.pages)}
       {children}
     </ReactMapGL>
   </div>
