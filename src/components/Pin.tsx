@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Marker } from "react-map-gl";
 import { Button, Typography, Popover } from "antd";
-import PageInfo from "./PageInfo";
+import PageContent from "./PageContent";
 import PageTitle from "./PageTitle";
 
 interface IProps {
@@ -10,6 +10,7 @@ interface IProps {
   name: string;
   src: string;
   description: string;
+  id: number;
 }
 
 const Pin: React.SFC<IProps> = ({
@@ -17,12 +18,13 @@ const Pin: React.SFC<IProps> = ({
   longitude,
   name,
   src,
-  description
+  description,
+  id
 }) => {
   return (
     <Marker latitude={latitude} longitude={longitude}>
       <Popover
-        content={<PageInfo src={src} description={description} />}
+        content={<PageContent id={id} src={src} description={description} />}
         trigger="click"
         title={<PageTitle name={name} />}
       >

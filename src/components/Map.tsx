@@ -13,6 +13,7 @@ const mapPagesToPins = (pages: Page[]) =>
       src={page.picture.data.url}
       key={page.id}
       description={page.description!}
+      id={page.id}
     />
   ));
 
