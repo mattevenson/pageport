@@ -1,6 +1,15 @@
 import React from "react";
 import Map from "./Map";
+import Login from "./Login";
+import { inject, observer } from "mobx-react";
+import { FirebaseStore } from "../stores/firebaseStore";
 
-const App: React.SFC = () => <Map />;
+interface IProps {
+  firebaseStore?: FirebaseStore;
+}
 
-export default App;
+const App: React.SFC<IProps> = ({ firebaseStore }) => (
+  <Map>{!firebaseStore!.user ? <Login /> : null}</Map>
+);
+
+export default inject("firebaseStore")(observer(App));
