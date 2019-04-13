@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Button, Tooltip, Avatar, Row, Modal } from "antd";
 import VisitsModal from "./VisitsModal";
+import { Visit } from "../store";
 
 interface IProps {
   id: number;
   src: string;
   description: string;
+  visit?: Visit;
 }
 
-const PageContent: React.SFC<IProps> = ({ src, id }) => {
+const PageContent: React.SFC<IProps> = ({ src, id, visit }) => {
   const [visible, setVisible] = useState(false);
   return (
     <div>
@@ -29,7 +31,12 @@ const PageContent: React.SFC<IProps> = ({ src, id }) => {
           />
         </Tooltip>
       </Row>
-      <VisitsModal id={id} visible={visible} onOk={() => setVisible(false)} />
+      <VisitsModal
+        id={id}
+        visible={visible}
+        setVisible={setVisible}
+        visit={visit}
+      />
     </div>
   );
 };

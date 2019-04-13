@@ -1,6 +1,7 @@
 import React from "react";
 import ReactMapGL from "react-map-gl";
 import { observer, inject } from "mobx-react";
+import { visits, Visit } from "../store";
 import { Store, Page } from "../store";
 import Pin from "./Pin";
 
@@ -14,6 +15,7 @@ const mapPagesToPins = (pages: Page[]) =>
       key={page.id}
       description={page.description!}
       id={page.id}
+      visit={visits.docs.find(doc => doc.data.id == page.id)}
     />
   ));
 

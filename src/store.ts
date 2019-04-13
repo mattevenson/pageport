@@ -4,6 +4,7 @@ import { ViewState } from "react-map-gl";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { Moment } from "moment";
 
 firebase.initializeApp({
   apiKey: "AIzaSyBo1fpxohHGslbE3k6Y9s0Cban4S9XXVLk",
@@ -81,7 +82,7 @@ export class Store {
 initFirestorter({ firebase: firebase });
 
 export type VisitType = {
-  pageId: number;
+  id: number;
   date: Date;
 };
 
