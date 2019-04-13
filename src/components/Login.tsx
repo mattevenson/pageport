@@ -5,6 +5,8 @@ import "firebase/auth";
 
 const signIn = async () => {
   const provider = new firebase.auth.FacebookAuthProvider();
+  provider.addScope("user_likes");
+  provider.addScope("user_location");
   await firebase.auth().signInWithPopup(provider);
 };
 

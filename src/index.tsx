@@ -9,12 +9,14 @@ import "./index.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import firebaseStore from "./stores/firebaseStore";
+import facebookStore from "./stores/facebookStore";
 
-const stores = { firebaseStore };
+const stores = { firebaseStore, facebookStore };
 
 configure({ enforceActions: "always" });
 
 const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+  facebookStore.fetchPages();
   ReactDOM.render(
     <Provider {...stores}>
       <App />
