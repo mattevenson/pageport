@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Marker } from "react-map-gl";
-import { Avatar, Typography } from "antd";
+import { Button, Typography, Popover } from "antd";
 
 interface IProps {
   latitude: number;
@@ -8,29 +8,14 @@ interface IProps {
   name: string;
 }
 
+const content = (name: string) => <div>{name}</div>;
+
 const Pin: React.SFC<IProps> = ({ latitude, longitude, name }) => {
-  const [hover, setHover] = useState(false);
   return (
     <Marker latitude={latitude} longitude={longitude}>
-      <div
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        style={{ display: "flex", alignItems: "center" }}
-      >
-        <Avatar
-          size="large"
-          style={{
-            marginRight: 5
-          }}
-        >
-          {name[0]}
-        </Avatar>
-        {hover ? (
-          <Typography.Title level={4} style={{ position: "relative", top: 5 }}>
-            {name}
-          </Typography.Title>
-        ) : null}
-      </div>
+      <Popover content={content(name)} trigger="focus">
+        <Button size="large" shape="circle" icon="home" />
+      </Popover>
     </Marker>
   );
 };
