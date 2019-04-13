@@ -10,8 +10,9 @@ import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import firebaseStore from "./stores/firebaseStore";
 import facebookStore from "./stores/facebookStore";
+import mapStore from "./stores/mapStore";
 
-const stores = { firebaseStore, facebookStore };
+const stores = { firebaseStore, facebookStore, mapStore };
 
 configure({ enforceActions: "always" });
 
