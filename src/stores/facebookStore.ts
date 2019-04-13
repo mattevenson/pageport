@@ -5,18 +5,18 @@ import "firebase/auth";
 export interface Page {
   name: string;
   location?: {
-    city?: string;
     latitude?: number;
     longitude?: number;
-    state?: string;
-    zip?: string;
-    country?: string;
   };
-  cover: {
-    source?: string;
+  picture: {
+    data: {
+      url: string;
+    };
   };
   description?: string;
   id: number;
+  link: string;
+  website?: string;
 }
 
 export class FacebookStore {
@@ -38,11 +38,11 @@ export class FacebookStore {
   fetchPages() {
     FB.getLoginStatus(() => {
       FB.api(
-        "/me/likes?fields=name,location,cover,description",
+        "/me/likes?fields=id,name,location{latitude,longitude},category,website,link,picture.type(large)",
         (response: any) => {
           const pages: Page[] = [];
           response.data.forEach((page: Page) => {
-            if (page.location && page.location.latitude) {
+            if (page.location && page.location!.latitude) {
               pages.push(page);
             }
           });

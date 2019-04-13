@@ -13,7 +13,6 @@ const PageInfo: React.SFC<IProps> = ({ src, description }) => (
     </Row>
     <Row type="flex" justify="center">
       <Button shape="circle" size="small" icon="facebook" />
-      <Button shape="circle" size="small" icon="instagram" />
       <Button shape="circle" size="small" icon="global" />
     </Row>
     <Row type="flex" justify="center">
