@@ -3,23 +3,18 @@ import ReactDOM from "react-dom";
 import { configure } from "mobx";
 import { Provider } from "mobx-react";
 import * as firebase from "firebase/app";
-
 import "firebase/auth";
 import "./index.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
-import firebaseStore from "./stores/firebaseStore";
-import facebookStore from "./stores/facebookStore";
-import mapStore from "./stores/mapStore";
-
-const stores = { firebaseStore, facebookStore, mapStore };
+import store from "./store";
 
 configure({ enforceActions: "always" });
 
 const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-  facebookStore.fetchPages();
+  store.fetchPages();
   ReactDOM.render(
-    <Provider {...stores}>
+    <Provider store={store}>
       <App />
     </Provider>,
     document.getElementById("root")
