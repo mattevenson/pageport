@@ -1,4 +1,4 @@
-import { override, fixBabelImports } from "customize-cra";
+const { override, fixBabelImports } = require("customize-cra");
 
 module.exports = override(
   fixBabelImports("import", {
