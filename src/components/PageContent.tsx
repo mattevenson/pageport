@@ -8,11 +8,11 @@ interface IProps {
   id: number;
   src: string;
   description: string;
-  date?: Date;
+  utc?: number;
   tz: string;
 }
 
-const PageContent: React.SFC<IProps> = ({ src, id, date, tz }) => {
+const PageContent: React.SFC<IProps> = ({ src, id, utc, tz }) => {
   return (
     <div>
       <Row type="flex" justify="center">
@@ -26,7 +26,7 @@ const PageContent: React.SFC<IProps> = ({ src, id, date, tz }) => {
         <DatePicker
           showTime={{ use12Hours: true, format: "hh:mm a" }}
           format="YYYY-MM-DD hh:mm a"
-          defaultValue={date ? moment(date).tz(tz) : undefined}
+          defaultValue={utc ? moment(utc).tz(tz) : undefined}
           onChange={async d => {
             const visit = visits.docs.find(visit => visit.data.id === id);
             if (visit) {

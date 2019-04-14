@@ -34,7 +34,7 @@ export interface Page {
 }
 
 export interface PageWithDate extends Page {
-  date?: Date;
+  utc?: number;
 }
 
 export class Store {
@@ -90,7 +90,7 @@ export class Store {
       const visit = visits.docs.find(v => v.data.id === page.id);
       return {
         ...page,
-        date: visit ? new Date(visit.data.utc) : undefined
+        utc: visit ? visit.data.utc : undefined
       };
     });
   }

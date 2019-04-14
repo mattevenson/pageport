@@ -14,7 +14,7 @@ const mapPagesToPins = (pages: PageWithDate[]) =>
       key={page.id}
       description={page.description!}
       id={page.id}
-      date={page.date}
+      utc={page.utc}
       tz={page.location!.tz!}
     />
   ));

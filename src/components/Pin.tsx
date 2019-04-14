@@ -1,6 +1,6 @@
 import React from "react";
 import { Marker } from "react-map-gl";
-import { Button, Popover } from "antd";
+import { Button, Popover, Badge } from "antd";
 import PageContent from "./PageContent";
 import PageTitle from "./PageTitle";
 
@@ -11,7 +11,7 @@ interface IProps {
   src: string;
   description: string;
   id: number;
-  date?: Date;
+  utc?: number;
   tz: string;
 }
 
@@ -22,7 +22,7 @@ const Pin: React.SFC<IProps> = ({
   src,
   description,
   id,
-  date,
+  utc,
   tz
 }) => {
   return (
@@ -34,13 +34,24 @@ const Pin: React.SFC<IProps> = ({
             id={id}
             src={src}
             description={description}
-            date={date}
+            utc={utc}
           />
         }
         trigger="click"
         title={<PageTitle name={name} />}
       >
-        <Button size="large" shape="circle" icon="home" />
+        <Badge
+          count={0}
+          style={{ backgroundColor: "#108ee9" }}
+          offset={[-5, 5]}
+        >
+          <Button
+            size="large"
+            shape="circle"
+            icon="home"
+            type={utc && utc < new Date().getTime() ? "primary" : "default"}
+          />
+        </Badge>
       </Popover>
     </Marker>
   );
