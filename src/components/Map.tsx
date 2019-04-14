@@ -1,10 +1,10 @@
 import React from "react";
 import ReactMapGL from "react-map-gl";
 import { observer, inject } from "mobx-react";
-import { Store, PageWithDate } from "../store";
+import { Store, Page } from "../store";
 import Pin from "./Pin";
 
-const mapPagesToPins = (pages: PageWithDate[]) =>
+const mapPagesToPins = (pages: Page[]) =>
   pages.map(page => (
     <Pin
       longitude={page.location!.longitude!}

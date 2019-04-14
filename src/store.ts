@@ -31,9 +31,6 @@ export interface Page {
   id: number;
   link: string;
   website?: string;
-}
-
-export interface PageWithDate extends Page {
   utc?: number;
 }
 
@@ -42,6 +39,10 @@ export class Store {
 
   @observable pages: Page[] = [];
 
+  @observable range?: [number, number];
+
+  @observable drawer: boolean = false;
+
   @action setPages(pages: Page[]) {
     this.pages = pages;
     console.log(this.pages.length);
@@ -49,6 +50,14 @@ export class Store {
 
   @action setUser(user: firebase.User | undefined) {
     this.user = user;
+  }
+
+  @action setRange(start: number, end: number) {
+    this.range = [start, end];
+  }
+
+  @action toggleDrawer() {
+    this.drawer = !this.drawer;
   }
 
   constructor() {
@@ -85,14 +94,35 @@ export class Store {
     });
   }
 
-  @computed get pagesWithDates() {
-    return this.pages.map(page => {
-      const visit = visits.docs.find(v => v.data.id === page.id);
-      return {
-        ...page,
-        utc: visit ? visit.data.utc : undefined
-      };
-    });
+  @computed get pagesWithDates(): Page[] {
+    const pages = this.pages
+      .map(page => {
+        const visit = visits.docs.find(v => v.data.id === page.id);
+        return {
+          ...page,
+          utc: visit ? visit.data.utc : undefined
+        };
+      })
+      .sort((a, b) => {
+        if (!a.utc && b.utc) {
+          return 1;
+        } else if (a.utc && !b.utc) {
+          return -1;
+        } else if (!a.utc && !b.utc) {
+          return 0;
+        } else {
+          return a.utc! - b.utc!;
+        }
+      });
+
+    if (!this.drawer || !this.range) {
+      return pages;
+    }
+
+    return pages.filter(
+      page =>
+        page.utc && page.utc >= this.range![0] && page.utc <= this.range![1]
+    );
   }
 }
 
