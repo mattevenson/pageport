@@ -124,6 +124,12 @@ export class Store {
         page.utc && page.utc >= this.range![0] && page.utc <= this.range![1]
     );
   }
+
+  @computed get coordinates() {
+    return this.pagesWithDates
+      .filter(page => page.utc)
+      .map(page => [page.location!.longitude!, page.location!.latitude!]);
+  }
 }
 
 initFirestorter({ firebase: firebase });

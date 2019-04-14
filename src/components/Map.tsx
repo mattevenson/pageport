@@ -33,7 +33,11 @@ const Map: React.SFC<IProps> = ({ children, store }) => (
       mapboxApiAccessToken="pk.eyJ1IjoibWF0dGV2ZW5zb24iLCJhIjoiY2p1ZjRza3B6MGFoNjRmcGptZzJicmswaiJ9.XdKarNxE21bMkSSt6HuFAA"
       onViewportChange={viewState => store!.setViewState(viewState)}
     >
-      <PolylineOverlay points={[[56, 19], [21, 70]]} />
+      <PolylineOverlay
+        points={store!.coordinates}
+        lineWidth={3}
+        color="#1890ff"
+      />
       {mapPagesToPins(store!.pagesWithDates)}
       {children}
     </ReactMapGL>

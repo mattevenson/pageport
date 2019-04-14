@@ -26,7 +26,12 @@ const Pin: React.SFC<IProps> = ({
   tz
 }) => {
   return (
-    <Marker latitude={latitude} longitude={longitude}>
+    <Marker
+      latitude={latitude}
+      longitude={longitude}
+      offsetLeft={-20}
+      offsetTop={-20}
+    >
       <Popover
         content={
           <PageContent
