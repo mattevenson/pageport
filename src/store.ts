@@ -1,6 +1,7 @@
 import { observable, action, computed } from "mobx";
 import { initFirestorter, Collection, Document } from "firestorter";
-import { ViewState } from "react-map-gl";
+import { ViewState, ViewportProps, FlyToInterpolator } from "react-map-gl";
+import * as d3 from "d3-ease";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -14,6 +15,8 @@ firebase.initializeApp({
   storageBucket: "facebooking-74728.appspot.com",
   messagingSenderId: "236972949665"
 });
+
+const uidBox = observable.box<string | undefined>(undefined);
 
 export interface Page {
   name: string;
@@ -45,6 +48,8 @@ export class Store {
 
   @observable drawer: boolean = false;
 
+  @observable overlay: boolean = true;
+
   @action setPages(pages: Page[]) {
     this.pages = pages;
     console.log(this.pages.length);
@@ -52,6 +57,7 @@ export class Store {
 
   @action setUser(user: firebase.User | undefined) {
     this.user = user;
+    uidBox.set(user ? user.uid : undefined);
   }
 
   @action setRange(range?: number[]) {
@@ -60,6 +66,10 @@ export class Store {
 
   @action toggleDrawer() {
     this.drawer = !this.drawer;
+  }
+
+  @action toggleOverlay() {
+    this.overlay = !this.overlay;
   }
 
   constructor() {
@@ -71,10 +81,18 @@ export class Store {
     });
   }
 
-  @observable viewState?: ViewState;
+  @observable viewport?: Partial<ViewportProps>;
 
-  @action setViewState(viewState: ViewState) {
-    this.viewState = viewState;
+  @action setViewport(
+    viewport: Partial<ViewportProps>,
+    transition: boolean = false
+  ) {
+    this.viewport = {
+      ...viewport,
+      transitionDuration: transition ? 5000 : undefined,
+      transitionInterpolator: transition ? new FlyToInterpolator() : undefined,
+      transitionEasing: transition ? d3.easeCubic : undefined
+    };
   }
 
   async fetchPages() {
@@ -84,7 +102,6 @@ export class Store {
         async (response: any) => {
           const pages: Page[] = [];
           for (const page of response.data) {
-            console.log(page.category);
             if (page.location && page.location.latitude) {
               const { latitude, longitude } = page.location;
               page.location.tz = tzLookup(latitude, longitude);
@@ -134,9 +151,17 @@ export class Store {
   }
 
   @computed get coordinates() {
-    return this.pagesWithDates
+    const split = this.pagesWithDates.filter(
+      page => page.utc! <= new Date().getTime()
+    ).length;
+    const solid = this.pagesWithDates
+      .slice(0, split)
+      .map(page => [page.location!.longitude!, page.location!.latitude!]);
+    const dashed = this.pagesWithDates
+      .slice(split - 1, this.pagesWithDates.length)
       .filter(page => page.utc)
       .map(page => [page.location!.longitude!, page.location!.latitude!]);
+    return [solid, dashed];
   }
 }
 
@@ -145,12 +170,19 @@ initFirestorter({ firebase: firebase });
 export type VisitType = {
   id: number;
   utc: number;
+  uid: string;
 };
 
 export type Visit = Document<VisitType>;
 
 export type Visits = Collection<Visit>;
 
-export const visits = new Collection<Visit>("visits");
+const visits = new Collection<Visit>("visits");
+visits.query = ref => {
+  const uid = uidBox.get();
+  return uid ? ref.where("uid", "==", uid) : null;
+};
+
+export { visits, uidBox };
 
 export default new Store();

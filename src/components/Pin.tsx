@@ -54,7 +54,7 @@ const Pin: React.SFC<IProps> = ({
         <Badge
           count={count}
           style={{ backgroundColor: "#108ee9" }}
-          offset={[-5, -5]}
+          offset={[-5, 3]}
         >
           <Button
             size="large"

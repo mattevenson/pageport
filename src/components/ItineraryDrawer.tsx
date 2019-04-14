@@ -1,7 +1,17 @@
 import React from "react";
-import { Drawer, DatePicker, Timeline, Typography } from "antd";
+import {
+  Row,
+  Drawer,
+  DatePicker,
+  Timeline,
+  Typography,
+  Switch,
+  Icon,
+  Col
+} from "antd";
 import { observer, inject } from "mobx-react";
 import { Store } from "../store";
+import moment from "moment-timezone";
 
 const { RangePicker } = DatePicker;
 
@@ -18,7 +28,27 @@ const ItineraryDrawer: React.SFC<IProps> = ({ store }) => (
     onClose={() => store!.toggleDrawer()}
     placement="left"
   >
-    <Typography.Title level={3}>Schedule</Typography.Title>
+    <Row
+      type="flex"
+      align="middle"
+      justify="start"
+      style={{ position: "relative", bottom: 6, marginBottom: 24 }}
+    >
+      <Icon
+        type="retweet"
+        style={{
+          fontSize: 20,
+          marginRight: 12
+        }}
+      />
+      <Switch
+        checked={store!.overlay}
+        onChange={() => store!.toggleOverlay()}
+      />
+    </Row>
+    <Typography.Title level={2} style={{ marginBottom: 20 }}>
+      Schedule
+    </Typography.Title>
     <RangePicker
       onChange={dates => {
         if (dates && dates.length == 2) {
@@ -31,13 +61,38 @@ const ItineraryDrawer: React.SFC<IProps> = ({ store }) => (
         }
       }}
     />
-    {store!.range ? (
-      <Timeline>
-        {store!.pagesWithDates.map(page => (
-          <Timeline.Item key={page.id}>{page.name}</Timeline.Item>
+    <Timeline style={{ marginTop: 30, marginLeft: 20 }}>
+      {store!.pagesWithDates
+        .filter(page => page.utc)
+        .map(page => (
+          <Timeline.Item
+            color={page.utc! > new Date().getTime() ? "gray" : "blue"}
+            key={page.id}
+          >
+            <a
+              onClick={() =>
+                store!.setViewport(
+                  {
+                    longitude: page.location!.longitude!,
+                    latitude: page.location!.latitude!,
+                    zoom: 14
+                  },
+                  true
+                )
+              }
+              style={{ fontSize: 16 }}
+            >
+              {page.name}
+            </a>
+            <br />
+            <Typography.Text>
+              {moment(page.utc!)
+                .tz(page.location!.tz!)
+                .format("MM/DD/YYYY hh:mm A")}
+            </Typography.Text>
+          </Timeline.Item>
         ))}
-      </Timeline>
-    ) : null}
+    </Timeline>
   </Drawer>
 );
 

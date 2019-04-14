@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";
 import { Button, Tooltip, Avatar, Row, DatePicker } from "antd";
-import { visits } from "../store";
+import { visits, uidBox } from "../store";
 
 interface IProps {
   id: number;
@@ -34,7 +34,11 @@ const PageContent: React.SFC<IProps> = ({ src, id, utc, tz }) => {
               }
             } else {
               if (d) {
-                await visits.add({ id, utc: d.toDate().getTime() });
+                await visits.add({
+                  id,
+                  utc: d.toDate().getTime(),
+                  uid: uidBox.get()
+                });
               }
             }
           }}

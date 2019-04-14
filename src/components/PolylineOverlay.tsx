@@ -6,13 +6,15 @@ interface IProps {
   color: string;
   lineWidth: number;
   renderWhileDragging?: boolean;
+  dashed?: boolean;
 }
 
 const PolylineOverlay: React.SFC<IProps> = ({
   points,
   renderWhileDragging = true,
   lineWidth,
-  color
+  color,
+  dashed = false
 }) => (
   <CanvasOverlay
     redraw={({ width, height, ctx, project }: CanvasRedrawOptions) => {
@@ -23,6 +25,9 @@ const PolylineOverlay: React.SFC<IProps> = ({
         ctx.lineWidth = lineWidth;
         ctx.strokeStyle = color;
         ctx.beginPath();
+        if (dashed) {
+          ctx.setLineDash([8, 4]);
+        }
         points.forEach(point => {
           const pixel = project([point[0], point[1]]);
           ctx.lineTo(pixel[0], pixel[1]);

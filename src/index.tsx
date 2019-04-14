@@ -13,11 +13,14 @@ configure({ enforceActions: "always" });
 
 const unsubscribe = firebase.auth().onAuthStateChanged(user => {
   navigator.geolocation.getCurrentPosition(position => {
-    store.setViewState({
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-      zoom: 12
-    });
+    // store.setViewport(
+    //   {
+    //     latitude: position.coords.latitude,
+    //     longitude: position.coords.longitude,
+    //     zoom: 10
+    //   },
+    //   true
+    // );
   });
   store.fetchPages();
   ReactDOM.render(

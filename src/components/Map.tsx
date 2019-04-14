@@ -31,17 +31,27 @@ interface IProps {
 const Map: React.SFC<IProps> = ({ children, store }) => (
   <div style={{ width: "100%", height: "100%", position: "absolute" }}>
     <ReactMapGL
-      {...store!.viewState}
+      {...store!.viewport}
       width="100%"
       height="100%"
       mapboxApiAccessToken="pk.eyJ1IjoibWF0dGV2ZW5zb24iLCJhIjoiY2p1ZjRza3B6MGFoNjRmcGptZzJicmswaiJ9.XdKarNxE21bMkSSt6HuFAA"
-      onViewportChange={viewState => store!.setViewState(viewState)}
+      onViewportChange={viewState => store!.setViewport(viewState)}
     >
-      <PolylineOverlay
-        points={store!.coordinates}
-        lineWidth={3}
-        color="#1890ff"
-      />
+      {store!.overlay && (
+        <div>
+          <PolylineOverlay
+            points={store!.coordinates[0]}
+            lineWidth={3}
+            color="#1890ff"
+          />
+          <PolylineOverlay
+            points={store!.coordinates[1]}
+            lineWidth={3}
+            color="#1890ff"
+            dashed
+          />
+        </div>
+      )}
       {mapPagesToPins(store!.pagesWithDates)}
       {children}
     </ReactMapGL>
