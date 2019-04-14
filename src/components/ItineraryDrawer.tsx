@@ -25,7 +25,7 @@ const ItineraryDrawer: React.SFC<IProps> = ({ store }) => (
             dates[1]!.toDate().getTime()
           ]);
         } else {
-          store!.setRange();
+          store!.setRange(undefined);
         }
       }}
     />
