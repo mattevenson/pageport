@@ -39,9 +39,9 @@ export class Store {
 
   @observable pages: Page[] = [];
 
-  @observable range?: [number, number];
+  @observable range?: number[];
 
-  @observable drawer: boolean = false;
+  @observable drawer: boolean = true;
 
   @action setPages(pages: Page[]) {
     this.pages = pages;
@@ -52,8 +52,8 @@ export class Store {
     this.user = user;
   }
 
-  @action setRange(start: number, end: number) {
-    this.range = [start, end];
+  @action setRange(range?: number[]) {
+    this.range = range;
   }
 
   @action toggleDrawer() {
