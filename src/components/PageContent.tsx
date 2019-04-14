@@ -1,7 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";
-import { Button, Tooltip, Avatar, Row, DatePicker } from "antd";
+import { Avatar, Row, DatePicker } from "antd";
 import { visits, uidBox } from "../store";
 
 interface IProps {
