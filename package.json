@@ -7,6 +7,7 @@
     "@types/facebook-js-sdk": "^3.2.1",
     "@types/jest": "24.0.11",
     "@types/moment": "^2.13.0",
+    "@types/moment-timezone": "^0.5.12",
     "@types/node": "11.13.4",
     "@types/react": "^16.8.11",
     "@types/react-dom": "16.8.4",
@@ -18,9 +19,11 @@
     "customize-cra": "^0.2.12",
     "firebase": "^5.9.4",
     "firestorter": "^1.2.2",
+    "geo-tz": "^5.0.4",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.3",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.23",
     "react": "^16.8.6",
     "react-app-rewired": "^2.1.1",
     "react-dom": "^16.8.6",
@@ -28,7 +31,8 @@
     "react-resize-detector": "^4.1.3",
     "react-scripts": "2.1.8",
     "superstruct": "^0.6.1",
-    "typescript": "3.4.3"
+    "typescript": "3.4.3",
+    "tz-lookup": "^6.1.16"
   },
   "scripts": {
     "start": "react-app-rewired start",

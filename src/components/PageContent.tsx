@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import { Button, Tooltip, Avatar, Row, Modal } from "antd";
-import VisitsModal from "./VisitsModal";
-import { Visit } from "../store";
+import React from "react";
+import { observer } from "mobx-react";
+import moment from "moment-timezone";
+import { Button, Tooltip, Avatar, Row, DatePicker } from "antd";
+import { visits } from "../store";
 
 interface IProps {
   id: number;
   src: string;
   description: string;
-  visit?: Visit;
+  date?: Date;
+  tz: string;
 }
 
-const PageContent: React.SFC<IProps> = ({ src, id, visit }) => {
-  const [visible, setVisible] = useState(false);
+const PageContent: React.SFC<IProps> = ({ src, id, date, tz }) => {
   return (
     <div>
       <Row type="flex" justify="center">
@@ -22,23 +23,28 @@ const PageContent: React.SFC<IProps> = ({ src, id, visit }) => {
         <Button shape="circle" size="small" icon="global" />
       </Row>
       <Row type="flex" justify="center">
-        <Tooltip title="Mark your visit" placement="right">
-          <Button
-            onClick={() => setVisible(true)}
-            shape="circle"
-            type="primary"
-            icon="calendar"
-          />
-        </Tooltip>
+        <DatePicker
+          showTime={{ use12Hours: true, format: "hh:mm a" }}
+          format="YYYY-MM-DD hh:mm a"
+          defaultValue={date ? moment(date).tz(tz) : undefined}
+          onChange={async d => {
+            const visit = visits.docs.find(visit => visit.data.id === id);
+            if (visit) {
+              if (d) {
+                await visit.update({ utc: d.toDate().getTime() });
+              } else {
+                await visit.delete();
+              }
+            } else {
+              if (d) {
+                await visits.add({ id, utc: d.toDate().getTime() });
+              }
+            }
+          }}
+        />
       </Row>
-      <VisitsModal
-        id={id}
-        visible={visible}
-        setVisible={setVisible}
-        visit={visit}
-      />
     </div>
   );
 };
 
-export default PageContent;
+export default observer(PageContent);

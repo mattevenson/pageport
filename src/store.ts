@@ -1,10 +1,10 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import { initFirestorter, Collection, Document } from "firestorter";
 import { ViewState } from "react-map-gl";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { Moment } from "moment";
+const tzLookup = require("tz-lookup");
 
 firebase.initializeApp({
   apiKey: "AIzaSyBo1fpxohHGslbE3k6Y9s0Cban4S9XXVLk",
@@ -20,6 +20,7 @@ export interface Page {
   location?: {
     latitude?: number;
     longitude?: number;
+    tz?: string;
   };
   picture: {
     data: {
@@ -30,6 +31,10 @@ export interface Page {
   id: number;
   link: string;
   website?: string;
+}
+
+export interface PageWithDate extends Page {
+  date?: Date;
 }
 
 export class Store {
@@ -61,20 +66,32 @@ export class Store {
     this.viewState = viewState;
   }
 
-  fetchPages() {
+  async fetchPages() {
     FB.getLoginStatus(() => {
       FB.api(
         "/me/likes?fields=id,name,location{latitude,longitude},category,website,link,picture.type(large)",
-        (response: any) => {
+        async (response: any) => {
           const pages: Page[] = [];
-          response.data.forEach((page: Page) => {
-            if (page.location && page.location!.latitude) {
+          for (const page of response.data) {
+            if (page.location && page.location.latitude) {
+              const { latitude, longitude } = page.location;
+              page.location.tz = tzLookup(latitude, longitude);
               pages.push(page);
             }
-          });
+          }
           this.setPages(pages);
         }
       );
+    });
+  }
+
+  @computed get pagesWithDates() {
+    return this.pages.map(page => {
+      const visit = visits.docs.find(v => v.data.id === page.id);
+      return {
+        ...page,
+        date: visit ? new Date(visit.data.utc) : undefined
+      };
     });
   }
 }
@@ -83,7 +100,7 @@ initFirestorter({ firebase: firebase });
 
 export type VisitType = {
   id: number;
-  date: Date;
+  utc: number;
 };
 
 export type Visit = Document<VisitType>;

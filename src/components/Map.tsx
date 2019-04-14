@@ -1,11 +1,10 @@
 import React from "react";
 import ReactMapGL from "react-map-gl";
 import { observer, inject } from "mobx-react";
-import { visits, Visit } from "../store";
-import { Store, Page } from "../store";
+import { Store, PageWithDate } from "../store";
 import Pin from "./Pin";
 
-const mapPagesToPins = (pages: Page[]) =>
+const mapPagesToPins = (pages: PageWithDate[]) =>
   pages.map(page => (
     <Pin
       longitude={page.location!.longitude!}
@@ -15,7 +14,8 @@ const mapPagesToPins = (pages: Page[]) =>
       key={page.id}
       description={page.description!}
       id={page.id}
-      visit={visits.docs.find(doc => doc.data.id == page.id)}
+      date={page.date}
+      tz={page.location!.tz!}
     />
   ));
 
@@ -32,7 +32,7 @@ const Map: React.SFC<IProps> = ({ children, store }) => (
       mapboxApiAccessToken="pk.eyJ1IjoibWF0dGV2ZW5zb24iLCJhIjoiY2p1ZjRza3B6MGFoNjRmcGptZzJicmswaiJ9.XdKarNxE21bMkSSt6HuFAA"
       onViewportChange={viewState => store!.setViewState(viewState)}
     >
-      {mapPagesToPins(store!.pages)}
+      {mapPagesToPins(store!.pagesWithDates)}
       {children}
     </ReactMapGL>
   </div>
