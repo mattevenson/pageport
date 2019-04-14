@@ -2,6 +2,7 @@ import React from "react";
 import ReactMapGL from "react-map-gl";
 import { observer, inject } from "mobx-react";
 import { Store, Page } from "../store";
+import PolylineOverlay from "./PolylineOverlay";
 import Pin from "./Pin";
 
 const mapPagesToPins = (pages: Page[]) =>
@@ -32,6 +33,7 @@ const Map: React.SFC<IProps> = ({ children, store }) => (
       mapboxApiAccessToken="pk.eyJ1IjoibWF0dGV2ZW5zb24iLCJhIjoiY2p1ZjRza3B6MGFoNjRmcGptZzJicmswaiJ9.XdKarNxE21bMkSSt6HuFAA"
       onViewportChange={viewState => store!.setViewState(viewState)}
     >
+      <PolylineOverlay points={[[56, 19], [21, 70]]} />
       {mapPagesToPins(store!.pagesWithDates)}
       {children}
     </ReactMapGL>
