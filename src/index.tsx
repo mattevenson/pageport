@@ -22,7 +22,6 @@ const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       true
     );
   });
-  store.fetchPages();
   ReactDOM.render(
     <Provider store={store}>
       <App />

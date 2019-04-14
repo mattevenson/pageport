@@ -74,6 +74,9 @@ export class Store {
 
   constructor() {
     firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.fetchPages();
+      }
       this.setUser(user || undefined);
     });
   }
