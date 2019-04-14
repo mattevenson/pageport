@@ -1,8 +1,10 @@
 import React from "react";
 import Map from "./Map";
 import Login from "./Login";
-import { Button, Icon, Typography } from "antd";
+import Logo from "./Logo";
+import { Button } from "antd";
 import { inject, observer } from "mobx-react";
+
 import ItineraryDrawer from "./ItineraryDrawer";
 import { Store } from "../store";
 
@@ -22,19 +24,7 @@ const App: React.SFC<IProps> = ({ store }) => (
     >
       Schedule
     </Button>
-    <a>
-      <Icon
-        type="like"
-        style={{
-          position: "absolute",
-          zIndex: 1000,
-          top: 24,
-          right: 40,
-          fontSize: 64,
-          color: "#1890ff"
-        }}
-      />
-    </a>
+    <Logo />
     <ItineraryDrawer />
     <Map>{!store!.user ? <Login /> : null}</Map>
   </div>

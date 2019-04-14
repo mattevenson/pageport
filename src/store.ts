@@ -80,12 +80,6 @@ export class Store {
 
   @observable viewport?: Partial<ViewportProps>;
 
-  @observable selected?: number;
-
-  @action setSelected(id: number) {
-    this.selected = id;
-  }
-
   @action setViewport(
     viewport: Partial<ViewportProps>,
     transition: boolean = false
@@ -161,7 +155,7 @@ export class Store {
       .slice(0, split)
       .map(page => [page.location!.longitude!, page.location!.latitude!]);
     const dashed = this.pagesWithDates
-      .slice(split - 1, this.pagesWithDates.length)
+      .slice(split == 0 ? 0 : split - 1, this.pagesWithDates.length)
       .filter(page => page.utc)
       .map(page => [page.location!.longitude!, page.location!.latitude!]);
     return [solid, dashed];
