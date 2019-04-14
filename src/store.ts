@@ -74,14 +74,17 @@ export class Store {
 
   constructor() {
     firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.fetchPages();
-      }
       this.setUser(user || undefined);
     });
   }
 
   @observable viewport?: Partial<ViewportProps>;
+
+  @observable selected?: number;
+
+  @action setSelected(id: number) {
+    this.selected = id;
+  }
 
   @action setViewport(
     viewport: Partial<ViewportProps>,

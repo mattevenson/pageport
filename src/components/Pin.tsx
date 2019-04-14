@@ -1,8 +1,10 @@
 import React from "react";
 import { Marker } from "react-map-gl";
 import { Button, Popover, Badge } from "antd";
+import { observer, inject } from "mobx-react";
 import PageContent from "./PageContent";
 import PageTitle from "./PageTitle";
+import { Store } from "../store";
 
 interface IProps {
   latitude: number;
@@ -16,6 +18,7 @@ interface IProps {
   count: number;
   website?: string;
   link: string;
+  store?: Store;
 }
 
 const Pin: React.SFC<IProps> = ({
@@ -29,7 +32,8 @@ const Pin: React.SFC<IProps> = ({
   tz,
   count,
   website,
-  link
+  link,
+  store
 }) => {
   return (
     <Marker
@@ -49,6 +53,8 @@ const Pin: React.SFC<IProps> = ({
           />
         }
         trigger="click"
+        visible={store!.selected === id}
+        onVisibleChange={visible => (visible ? store!.setSelected(id) : null)}
         title={<PageTitle name={name} website={website} link={link} />}
       >
         <Badge
@@ -79,4 +85,4 @@ const Pin: React.SFC<IProps> = ({
   );
 };
 
-export default Pin;
+export default inject("store")(observer(Pin));
