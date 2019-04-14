@@ -15,13 +15,7 @@ const PolylineOverlay: React.SFC<IProps> = ({
   color
 }) => (
   <CanvasOverlay
-    redraw={({
-      width,
-      height,
-      ctx,
-      project,
-      unproject
-    }: CanvasRedrawOptions) => {
+    redraw={({ width, height, ctx, project }: CanvasRedrawOptions) => {
       ctx.clearRect(0, 0, width, height);
       ctx.globalCompositeOperation = "lighter";
 

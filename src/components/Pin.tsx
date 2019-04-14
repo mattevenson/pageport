@@ -13,6 +13,9 @@ interface IProps {
   id: number;
   utc?: number;
   tz: string;
+  count: number;
+  website?: string;
+  link: string;
 }
 
 const Pin: React.SFC<IProps> = ({
@@ -23,7 +26,10 @@ const Pin: React.SFC<IProps> = ({
   description,
   id,
   utc,
-  tz
+  tz,
+  count,
+  website,
+  link
 }) => {
   return (
     <Marker
@@ -43,19 +49,30 @@ const Pin: React.SFC<IProps> = ({
           />
         }
         trigger="click"
-        title={<PageTitle name={name} />}
+        title={<PageTitle name={name} website={website} link={link} />}
       >
         <Badge
-          count={0}
+          count={count}
           style={{ backgroundColor: "#108ee9" }}
-          offset={[-5, 5]}
+          offset={[-5, -5]}
         >
           <Button
             size="large"
             shape="circle"
-            icon="home"
-            type={utc && utc < new Date().getTime() ? "primary" : "default"}
-          />
+            type={
+              utc
+                ? utc < new Date().getTime()
+                  ? "primary"
+                  : "default"
+                : "dashed"
+            }
+          >
+            {name
+              .split(" ")
+              .map(word => word[0])
+              .filter(c => c == c.toUpperCase())
+              .join("")}
+          </Button>
         </Badge>
       </Popover>
     </Marker>

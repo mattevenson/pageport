@@ -1,5 +1,5 @@
 import React from "react";
-import { Drawer, DatePicker, Timeline } from "antd";
+import { Drawer, DatePicker, Timeline, Typography } from "antd";
 import { observer, inject } from "mobx-react";
 import { Store } from "../store";
 
@@ -14,9 +14,11 @@ const ItineraryDrawer: React.SFC<IProps> = ({ store }) => (
     visible={store!.drawer}
     mask={false}
     width={300}
-    closable={false}
+    closable={true}
+    onClose={() => store!.toggleDrawer()}
     placement="left"
   >
+    <Typography.Title level={3}>Schedule</Typography.Title>
     <RangePicker
       onChange={dates => {
         if (dates && dates.length == 2) {

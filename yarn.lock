@@ -1290,6 +1290,10 @@
   dependencies:
     antd "*"
 
+"@types/d3-ease@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@types/d3-ease/-/d3-ease-1.0.8.tgz#b440761fb85985d76259ec9c5bf01c4c56778ac2"
+
 "@types/facebook-js-sdk@^3.2.1":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@types/facebook-js-sdk/-/facebook-js-sdk-3.2.1.tgz#d8ed7319d90d8d97037b5757c35ea46dfcf245c7"
@@ -3262,6 +3266,10 @@ customize-cra@^0.2.12:
 cyclist@~0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
+
+d3-ease@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-1.0.5.tgz#8ce59276d81241b1b72042d6af2d40e76d936ffb"
 
 damerau-levenshtein@^1.0.4:
   version "1.0.4"

@@ -15,15 +15,12 @@ interface IProps {
 const PageContent: React.SFC<IProps> = ({ src, id, utc, tz }) => {
   return (
     <div>
-      <Row type="flex" justify="center">
-        <Avatar shape="circle" src={src} size={128} />
-      </Row>
-      <Row type="flex" justify="center">
-        <Button shape="circle" size="small" icon="facebook" />
-        <Button shape="circle" size="small" icon="global" />
+      <Row type="flex" justify="center" style={{ marginBottom: 15 }}>
+        <Avatar shape="square" src={src} size={128} />
       </Row>
       <Row type="flex" justify="center">
         <DatePicker
+          placeholder="Schedule your visit"
           showTime={{ use12Hours: true, format: "hh:mm a" }}
           format="YYYY-MM-DD hh:mm a"
           defaultValue={utc ? moment(utc).tz(tz) : undefined}

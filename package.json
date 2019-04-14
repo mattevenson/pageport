@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/antd": "^1.0.0",
+    "@types/d3-ease": "^1.0.8",
     "@types/facebook-js-sdk": "^3.2.1",
     "@types/jest": "24.0.11",
     "@types/moment": "^2.13.0",
@@ -17,6 +18,7 @@
     "antd": "^3.16.2",
     "babel-plugin-import": "^1.11.0",
     "customize-cra": "^0.2.12",
+    "d3-ease": "^1.0.5",
     "firebase": "^5.9.4",
     "firestorter": "^1.2.2",
     "geo-tz": "^5.0.4",

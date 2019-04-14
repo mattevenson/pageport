@@ -1,8 +1,9 @@
 import React from "react";
-import ReactMapGL from "react-map-gl";
+import ReactMapGL, { FlyToInterpolator } from "react-map-gl";
 import { observer, inject } from "mobx-react";
 import { Store, Page } from "../store";
 import PolylineOverlay from "./PolylineOverlay";
+import * as d3 from "d3-ease";
 import Pin from "./Pin";
 
 const mapPagesToPins = (pages: Page[]) =>
@@ -17,6 +18,9 @@ const mapPagesToPins = (pages: Page[]) =>
       id={page.id}
       utc={page.utc}
       tz={page.location!.tz!}
+      count={page.count!}
+      website={page.website}
+      link={page.link}
     />
   ));
 

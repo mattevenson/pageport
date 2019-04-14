@@ -12,6 +12,13 @@ import store from "./store";
 configure({ enforceActions: "always" });
 
 const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+  navigator.geolocation.getCurrentPosition(position => {
+    store.setViewState({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+      zoom: 12
+    });
+  });
   store.fetchPages();
   ReactDOM.render(
     <Provider store={store}>

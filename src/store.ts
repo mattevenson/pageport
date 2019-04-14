@@ -32,6 +32,8 @@ export interface Page {
   link: string;
   website?: string;
   utc?: number;
+  category: string;
+  count?: number;
 }
 
 export class Store {
@@ -41,7 +43,7 @@ export class Store {
 
   @observable range?: number[];
 
-  @observable drawer: boolean = true;
+  @observable drawer: boolean = false;
 
   @action setPages(pages: Page[]) {
     this.pages = pages;
@@ -78,10 +80,11 @@ export class Store {
   async fetchPages() {
     FB.getLoginStatus(() => {
       FB.api(
-        "/me/likes?fields=id,name,location{latitude,longitude},category,website,link,picture.type(large)",
+        "/me/likes?fields=id,name,location{latitude,longitude},website,link,picture.type(large)",
         async (response: any) => {
           const pages: Page[] = [];
           for (const page of response.data) {
+            console.log(page.category);
             if (page.location && page.location.latitude) {
               const { latitude, longitude } = page.location;
               page.location.tz = tzLookup(latitude, longitude);
@@ -95,6 +98,7 @@ export class Store {
   }
 
   @computed get pagesWithDates(): Page[] {
+    let count = 1;
     const pages = this.pages
       .map(page => {
         const visit = visits.docs.find(v => v.data.id === page.id);
@@ -113,7 +117,11 @@ export class Store {
         } else {
           return a.utc! - b.utc!;
         }
-      });
+      })
+      .map(a => ({
+        ...a,
+        count: a.utc && a.utc > new Date().getTime() ? count++ : 0
+      }));
 
     if (!this.drawer || !this.range) {
       return pages;
